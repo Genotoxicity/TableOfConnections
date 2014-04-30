@@ -8,9 +8,9 @@ namespace KSP.E3.TableOfConnections
 {
     class ConnectionInfoComparer : IComparer<ConnectionInfo>
     {
-        private static NaturalSortingStringComparer comparer;
+        private NaturalSortingStringComparer comparer;
 
-        static ConnectionInfoComparer()
+        public ConnectionInfoComparer()
         {
             comparer = new NaturalSortingStringComparer();
         }
