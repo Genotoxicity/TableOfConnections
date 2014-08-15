@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using KSPE3Lib;
 
 namespace KSP.E3.TableOfConnections

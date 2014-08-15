@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using KSPE3Lib;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
@@ -100,12 +95,12 @@ namespace KSP.E3.TableOfConnections
         private static List<ConnectionInfo> GetConnectionInfosByConnections(E3Project project, Sheet sheet, int electricShemeTypeCode)
         {
             List<ConnectionInfo> connectionInfos = new List<ConnectionInfo>();
-            Core core = project.GetCoreById(0);
+            Core core = project.GetCableCoreById(0);
             WireCore wire = project.GetWireCoreById(0);
-            NormalDevice normalDevice = project.GetDeviceById(0);
+            NormalDevice normalDevice = project.GetNormalDeviceById(0);
             DevicePin devicePin = project.GetDevicePinById(0);
             Connection connection = project.GetConnectionById(0);
-            HashSet<int> electricSchemeSheetIds = GetElectricSchemeSheetIds(project, sheet, electricShemeTypeCode);
+            HashSet<int> electricSchemeSheetIds = GetElectricSchemeSheetIds(project.SheetIds, sheet, electricShemeTypeCode);
             List<int> connectionIds = project.ConnectionIds;
             foreach (int connectionId in connectionIds)
             {
@@ -142,14 +137,13 @@ namespace KSP.E3.TableOfConnections
             return connectionInfos;
         }
 
-        private static HashSet<int> GetElectricSchemeSheetIds(E3Project project, Sheet sheet, int electricShemeTypeCode)
+        private static HashSet<int> GetElectricSchemeSheetIds(List<int> sheetIds, Sheet sheet, int electricShemeTypeCode)
         {
-            List<int> sheetIds = project.SheetIds;
             HashSet<int> electricSchemeSheetIds = new HashSet<int>();
             foreach (int sheetId in sheetIds)
             {
                 sheet.Id = sheetId;
-                if (sheet.IsTypeOf(electricShemeTypeCode))
+                if (sheet.IsSchematicTypeOf(electricShemeTypeCode))
                     electricSchemeSheetIds.Add(sheetId);
             }
             return electricSchemeSheetIds;
@@ -158,10 +152,10 @@ namespace KSP.E3.TableOfConnections
         private static List<ConnectionInfo> GetConnectionInfosByCoresAndWires(E3Project project)
         {
             List<ConnectionInfo> connectionInfos = new List<ConnectionInfo>();
-            CableDevice cable = project.GetCableById(0);
-            Core core = project.GetCoreById(0);
+            CableDevice cable = project.GetCableDeviceById(0);
+            Core core = project.GetCableCoreById(0);
             WireCore wire = project.GetWireCoreById(0);
-            NormalDevice normalDevice = project.GetDeviceById(0);
+            NormalDevice normalDevice = project.GetNormalDeviceById(0);
             DevicePin devicePin = project.GetDevicePinById(0);
             List<int> cableIds = project.CableIds;
             List<int> wireIds = project.WireIds;
